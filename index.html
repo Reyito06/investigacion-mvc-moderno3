@@ -1,0 +1,2196 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="description" content="Investigación universitaria sobre el patrón Modelo Vista Controlador, su origen, evolución y aplicación en el desarrollo web moderno.">
+<meta name="theme-color" content="#102c50">
+<title>MVC | Investigación Académica UASD</title>
+
+<style>
+
+:root {
+    --primary: #102c50;
+    --primary-light: #194b7c;
+    --primary-soft: #eaf1f8;
+    --gold: #c9a45c;
+    --gold-light: #f5eddc;
+    --white: #ffffff;
+    --background: #f4f6f9;
+    --surface: #ffffff;
+    --text: #263548;
+    --muted: #64748b;
+    --border: #dfe6ee;
+    --success: #18794e;
+    --danger: #b42318;
+    --shadow: 0 8px 28px rgba(16,44,80,.07);
+    --radius: 14px;
+    --content-width: 1180px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.75;
+}
+
+button, input {
+    font: inherit;
+}
+
+button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    color: var(--primary-light);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    width: min(var(--content-width), 92%);
+    margin: auto;
+}
+
+img {
+    max-width: 100%;
+}
+
+.topbar {
+    background: #0b2039;
+    color: #d9e4f0;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 8px 0;
+}
+
+.topbar-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.header {
+    background: var(--primary);
+    color: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 18px rgba(0,0,0,.13);
+}
+
+.nav-container {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: white;
+    font-weight: 700;
+}
+
+.brand-mark {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    background: var(--gold);
+    color: var(--primary);
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.brand small {
+    display: block;
+    color: #cbd8e6;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.nav a {
+    color: #e6edf5;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.nav a:hover,
+.nav a.active {
+    color: var(--gold);
+    text-decoration: none;
+}
+
+.menu-button {
+    display: none;
+    background: transparent;
+    border: 0;
+    color: white;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 85% 10%,
+        rgba(201,164,92,.19), transparent 28%),
+        linear-gradient(135deg,#102c50,#194b7c);
+    color: white;
+    padding: 85px 0 95px;
+}
+
+.hero-content {
+    max-width: 940px;
+}
+
+.institution {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.faculty {
+    color: #d9e4f0;
+    margin-top: 9px;
+    font-size: 14px;
+}
+
+.hero-rule {
+    width: 72px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 5px;
+    margin: 26px 0;
+}
+
+.hero h1 {
+    max-width: 850px;
+    font-size: clamp(39px,6vw,68px);
+    line-height: 1.08;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    color: var(--gold);
+}
+
+.hero-description {
+    max-width: 720px;
+    color: #d9e4f0;
+    font-size: 18px;
+}
+
+.academic-data {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 22px;
+    max-width: 780px;
+    margin: 36px 0;
+    padding: 26px;
+    background: rgba(255,255,255,.075);
+    border: 1px solid rgba(255,255,255,.17);
+    border-radius: var(--radius);
+}
+
+.academic-item span {
+    display: block;
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+}
+
+.academic-item strong {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.button-gold {
+    background: var(--gold);
+    color: var(--primary);
+}
+
+.button-gold:hover {
+    background: #e4c47e;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.button-outline {
+    background: transparent;
+    color: white;
+    border-color: rgba(255,255,255,.4);
+}
+
+.button-outline:hover {
+    background: rgba(255,255,255,.1);
+    text-decoration: none;
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 245px minmax(0,1fr);
+    gap: 30px;
+    align-items: start;
+    padding-top: 42px;
+    padding-bottom: 65px;
+}
+
+.sidebar {
+    position: sticky;
+    top: 95px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+}
+
+.sidebar-heading {
+    color: var(--primary);
+    font-size: 15px;
+    margin-bottom: 14px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 8px 9px;
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 12px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: var(--primary-soft);
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.sidebar-actions {
+    display: grid;
+    gap: 9px;
+    margin-top: 20px;
+}
+
+.sidebar-button {
+    padding: 10px;
+    background: var(--primary);
+    color: white;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.sidebar-button:hover {
+    background: var(--primary-light);
+}
+
+.article {
+    min-width: 0;
+}
+
+.section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 34px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    scroll-margin-top: 100px;
+}
+
+.section-label {
+    color: #9a762f;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.section h2 {
+    color: var(--primary);
+    font-size: 26px;
+    line-height: 1.3;
+    margin: 9px 0 20px;
+}
+
+.section h3 {
+    color: var(--primary-light);
+    font-size: 18px;
+    margin: 26px 0 12px;
+}
+
+.section p {
+    text-align: justify;
+    margin-bottom: 15px;
+}
+
+.section ul,
+.section ol {
+    padding-left: 25px;
+    margin-bottom: 17px;
+}
+
+.section li {
+    margin-bottom: 7px;
+}
+
+.section a {
+    overflow-wrap: anywhere;
+}
+
+.citation {
+    color: var(--primary-light);
+    font-size: .95em;
+    white-space: normal;
+}
+
+.callout {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    background: #faf6ed;
+    color: #655638;
+    font-size: 13px;
+}
+
+.subheading {
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--border);
+}
+
+.component-grid {
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.component-card {
+    background: #fbfcfe;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 22px;
+}
+
+.component-symbol {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 11px;
+    font-size: 21px;
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+.component-card h3 {
+    margin: 0 0 10px;
+}
+
+.component-card p {
+    font-size: 13px;
+    text-align: left;
+    margin: 0;
+}
+
+.model-card .component-symbol {
+    background: #e6efff;
+    color: #24549a;
+}
+
+.view-card .component-symbol {
+    background: #e4f4eb;
+    color: #18794e;
+}
+
+.controller-card .component-symbol {
+    background: #fff0dd;
+    color: #965d12;
+}
+
+.diagram {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 22px 0;
+}
+
+.diagram-title {
+    text-align: center;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 22px;
+}
+
+.diagram-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.diagram-node {
+    width: min(100%,340px);
+    text-align: center;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.node-user {
+    background: #edf2f8;
+}
+
+.node-controller {
+    background: #fff1df;
+    border-color: #ead1a8;
+}
+
+.node-model {
+    background: #e8efff;
+    border-color: #cbdaf5;
+}
+
+.node-view {
+    background: #e7f5ed;
+    border-color: #c6e4d2;
+}
+
+.diagram-arrow {
+    color: var(--gold);
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 17px;
+    margin-top: 20px;
+}
+
+.comparison-card {
+    padding: 20px;
+    background: #fafcff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.comparison-card h3 {
+    margin: 0 0 14px;
+}
+
+.comparison-card ul {
+    padding-left: 20px;
+    font-size: 13px;
+}
+
+.positive {
+    color: var(--success) !important;
+}
+
+.negative {
+    color: var(--danger) !important;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 22px 0;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 570px;
+}
+
+th, td {
+    text-align: left;
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: top;
+}
+
+th {
+    background: var(--primary);
+    color: white;
+    font-weight: 700;
+}
+
+tbody tr:nth-child(even) {
+    background: #f5f8fb;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.demo-panel {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 22px 0;
+}
+
+.demo-heading {
+    color: var(--primary);
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.demo-description {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-field {
+    display: grid;
+    gap: 6px;
+}
+
+.form-field label {
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.form-field input {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 13px;
+}
+
+.form-field input:focus {
+    outline: 2px solid #a7c3e5;
+    border-color: var(--primary-light);
+}
+
+.form-actions {
+    margin-top: 17px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.demo-message {
+    margin-top: 15px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.student-result {
+    margin-top: 20px;
+    padding: 17px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+
+.student-result h3 {
+    margin: 0 0 12px;
+}
+
+.student-result p {
+    margin: 5px 0;
+    font-size: 13px;
+    text-align: left;
+}
+
+.demo-note {
+    margin-top: 17px;
+    padding: 12px;
+    background: var(--gold-light);
+    border-radius: 7px;
+    color: #705a2e;
+    font-size: 12px;
+}
+
+.code-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.code-heading h3 {
+    margin: 0;
+}
+
+.copy-button {
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--primary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+pre {
+    overflow-x: auto;
+    padding: 22px;
+    margin: 12px 0 20px;
+    border-radius: 9px;
+    background: #10243b;
+    color: #e4edf7;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    tab-size: 4;
+}
+
+code {
+    font-family: Consolas, monospace;
+}
+
+.references {
+    display: grid;
+    gap: 18px;
+}
+
+.reference-item {
+    padding-left: 32px;
+    text-indent: -32px;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.reference-item a {
+    text-decoration: underline;
+}
+
+.footer {
+    background: #0b2039;
+    color: #d7e2ee;
+    padding: 32px 0;
+    text-align: center;
+    font-size: 12px;
+}
+
+.footer p {
+    text-align: center;
+    margin: 4px 0;
+}
+
+.footer strong {
+    color: var(--gold);
+}
+
+.back-top {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    width: 45px;
+    height: 45px;
+    display: none;
+    place-items: center;
+    background: var(--gold);
+    color: var(--primary);
+    border: 0;
+    border-radius: 50%;
+    font-size: 23px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+}
+
+.back-top.visible {
+    display: grid;
+}
+
+:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+@media (max-width: 1000px) {
+    .nav {
+        gap: 10px;
+    }
+
+    .nav a {
+        font-size: 11px;
+    }
+
+    .main-layout {
+        grid-template-columns: 210px minmax(0,1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 760px) {
+    .topbar-content {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .menu-button {
+        display: block;
+    }
+
+    .nav {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        padding: 12px 4%;
+        background: var(--primary);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    .nav.open {
+        display: flex;
+    }
+
+    .nav a {
+        display: block;
+        padding: 12px;
+        font-size: 13px;
+        border-top: 1px solid rgba(255,255,255,.1);
+    }
+
+    .hero {
+        padding: 60px 0;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+    .academic-data {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .main-layout {
+        display: block;
+        padding-top: 24px;
+    }
+
+    .sidebar {
+        position: static;
+        margin-bottom: 22px;
+    }
+
+    .sidebar a {
+        display: inline-block;
+        margin: 3px;
+    }
+
+    .section {
+        padding: 24px 19px;
+    }
+
+    .component-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 2.54cm;
+    }
+
+    body {
+        background: white;
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-size: 12pt;
+        line-height: 2;
+    }
+
+    .topbar,
+    .header,
+    .sidebar,
+    .hero-actions,
+    .back-top,
+    .form-actions,
+    .copy-button {
+        display: none !important;
+    }
+
+    .hero {
+        min-height: 240mm;
+        padding: 35mm 10mm;
+        background: white !important;
+        color: black !important;
+        page-break-after: always;
+    }
+
+    .hero h1,
+    .hero h1 span,
+    .hero-description,
+    .institution,
+    .faculty,
+    .academic-item strong,
+    .academic-item span {
+        color: black !important;
+    }
+
+    .academic-data {
+        background: white;
+        border: 1px solid #777;
+    }
+
+    .main-layout {
+        display: block;
+        padding: 0;
+    }
+
+    .section {
+        border: 0;
+        box-shadow: none;
+        padding: 10px 0;
+        break-inside: auto;
+    }
+
+    .section h2,
+    .section h3 {
+        color: black;
+    }
+
+    .footer {
+        background: white;
+        color: black;
+    }
+
+    .demo-panel {
+        background: white;
+    }
+
+    pre {
+        background: #f1f1f1;
+        color: black;
+        white-space: pre-wrap;
+    }
+
+    th {
+        background: #e5e5e5 !important;
+        color: black;
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .table-container {
+        overflow: visible;
+    }
+
+    table {
+        min-width: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <div class="container topbar-content">
+        <span>UNIVERSIDAD AUTÓNOMA DE SANTO DOMINGO</span>
+        <span>INVESTIGACIÓN ACADÉMICA · 2026</span>
+    </div>
+</div>
+
+<header class="header">
+    <div class="container nav-container">
+
+        <a href="#inicio" class="brand">
+            <span class="brand-mark">MVC</span>
+            <span>
+                INVESTIGACIÓN MVC
+                <small>ARQUITECTURA DE SOFTWARE</small>
+            </span>
+        </a>
+
+        <button class="menu-button" id="menuButton"
+                aria-label="Abrir menú"
+                aria-expanded="false"
+                aria-controls="mainNav">☰</button>
+
+        <nav class="nav" id="mainNav" aria-label="Navegación principal">
+            <a href="#inicio">Inicio</a>
+            <a href="#introduccion">Introducción</a>
+            <a href="#desarrollo">Desarrollo</a>
+            <a href="#frameworks">Frameworks</a>
+            <a href="#ejemplo">Ejemplo</a>
+            <a href="#conclusion">Conclusión</a>
+            <a href="#referencias">Referencias</a>
+        </nav>
+
+    </div>
+</header>
+
+<main>
+
+<!-- ===================================================
+     PORTADA
+=================================================== -->
+
+<section class="hero" id="inicio">
+    <div class="container hero-content">
+
+        <p class="institution">
+            UNIVERSIDAD AUTÓNOMA DE SANTO DOMINGO
+        </p>
+
+        <p class="faculty">
+            Facultad de Ciencias · Escuela de Informática
+        </p>
+
+        <div class="hero-rule"></div>
+
+        <h1>
+            Modelo Vista
+            <span>Controlador</span>
+            (MVC)
+        </h1>
+
+        <p class="hero-description">
+            Origen, evolución y uso actual en el desarrollo
+            de aplicaciones web modernas.
+        </p>
+
+        <div class="academic-data">
+
+            <div class="academic-item">
+                <span>ESTUDIANTE</span>
+                <strong>Bienvenido Quezada Alcántara</strong>
+            </div>
+
+            <div class="academic-item">
+                <span>DOCENTE</span>
+                <strong>Radhamés Silverio González</strong>
+            </div>
+
+            <div class="academic-item">
+                <span>ASIGNATURA</span>
+                <strong>Laboratorio de Lenguaje de Programación III</strong>
+            </div>
+
+            <div class="academic-item">
+                <span>CARRERA</span>
+                <strong>Licenciatura en Informática</strong>
+            </div>
+
+            <div class="academic-item">
+                <span>UBICACIÓN</span>
+                <strong>Santo Domingo, República Dominicana</strong>
+            </div>
+
+            <div class="academic-item">
+                <span>FECHA</span>
+                <strong>11 de noviembre de 2026</strong>
+            </div>
+
+        </div>
+
+        <div class="hero-actions">
+            <a href="#introduccion" class="button button-gold">
+                Comenzar investigación →
+            </a>
+
+            <button class="button button-outline"
+                    onclick="window.print()">
+                Imprimir / Guardar PDF
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<div class="container main-layout">
+
+    <aside class="sidebar">
+        <h2 class="sidebar-heading">Índice de contenidos</h2>
+
+        <nav id="sideNav" aria-label="Índice de la investigación">
+            <a href="#introduccion">Introducción</a>
+            <a href="#concepto">1. Concepto de MVC</a>
+            <a href="#origen">2. Origen y propósito</a>
+            <a href="#componentes">3. Componentes</a>
+            <a href="#ventajas">4. Ventajas y desventajas</a>
+            <a href="#importancia">5. Importancia actual</a>
+            <a href="#uso">6. Uso moderno</a>
+            <a href="#frameworks">7. Frameworks</a>
+            <a href="#ejemplo">8. Ejemplo práctico</a>
+            <a href="#conclusion">9. Conclusión</a>
+            <a href="#referencias">Referencias</a>
+        </nav>
+
+        <div class="sidebar-actions">
+            <button class="sidebar-button" onclick="window.print()">
+                Imprimir investigación
+            </button>
+        </div>
+    </aside>
+
+    <article class="article">
+
+        <!-- INTRODUCCIÓN -->
+
+        <section class="section" id="introduccion">
+
+            <span class="section-label">PRESENTACIÓN ACADÉMICA</span>
+
+            <h2>Introducción</h2>
+
+            <p>
+                El desarrollo de aplicaciones web ha evolucionado
+                considerablemente debido al crecimiento de las
+                tecnologías, las necesidades de los usuarios y
+                la complejidad de los sistemas informáticos.
+                Para construir aplicaciones organizadas y
+                mantenibles es necesario establecer una
+                estructura que permita distribuir correctamente
+                las responsabilidades del software.
+            </p>
+
+            <p>
+                El patrón Modelo-Vista-Controlador, conocido
+                como MVC, constituye uno de los enfoques
+                arquitectónicos más reconocidos para organizar
+                aplicaciones. Su propuesta consiste en separar
+                la representación de los datos, la interfaz
+                de usuario y el procesamiento de las solicitudes.
+            </p>
+
+            <p>
+                Esta investigación tiene como propósito estudiar
+                el origen de MVC, explicar sus componentes,
+                identificar sus ventajas y limitaciones,
+                analizar su importancia en el desarrollo
+                contemporáneo y comparar su utilización en
+                diferentes frameworks.
+            </p>
+
+            <p>
+                Finalmente, se presenta un ejemplo aplicado
+                a un sistema universitario de registro de
+                estudiantes, con el propósito de demostrar
+                cómo se distribuyen las responsabilidades
+                entre el Modelo, la Vista y el Controlador.
+            </p>
+
+        </section>
+
+        <!-- DESARROLLO -->
+
+        <section class="section" id="desarrollo">
+
+            <span class="section-label">CAPÍTULO I · FUNDAMENTOS</span>
+
+            <h2 id="concepto">1. ¿Qué es el patrón MVC?</h2>
+
+            <p>
+                Modelo-Vista-Controlador (MVC) es un patrón
+                arquitectónico de software que divide una
+                aplicación en tres componentes principales:
+                Modelo (Model), Vista (View) y Controlador
+                (Controller). Cada componente tiene una
+                responsabilidad definida y participa en
+                el funcionamiento general del sistema.
+            </p>
+
+            <p>
+                El Modelo administra la información y las
+                reglas del dominio; la Vista presenta los
+                datos y la interfaz; mientras que el
+                Controlador interpreta las acciones del
+                usuario y coordina las operaciones necesarias.
+                Esta separación busca reducir el acoplamiento
+                entre las partes de una aplicación.
+            </p>
+
+            <p>
+                La documentación de Microsoft explica que
+                MVC separa las aplicaciones en estos tres
+                grupos de componentes y permite organizar
+                las solicitudes, los datos y la presentación
+                de los resultados
+                <a class="citation"
+                   href="https://learn.microsoft.com/en-us/aspnet/core/mvc/overview"
+                   target="_blank" rel="noopener">
+                   (Microsoft, s. f.)
+                </a>.
+            </p>
+
+            <h2 id="origen">2. Origen y propósito inicial</h2>
+
+            <p>
+                El patrón MVC se originó en el trabajo
+                de Trygve Reenskaug en Xerox PARC durante
+                la década de 1970, en el contexto del
+                desarrollo de interfaces para Smalltalk.
+                El documento técnico de Reenskaug fechado
+                el 10 de diciembre de 1979 describe los
+                conceptos de modelos, vistas y controladores
+                <a class="citation"
+                   href="https://doi.org/10.5281/zenodo.3676092"
+                   target="_blank" rel="noopener">
+                   (Reenskaug, 1979)
+                </a>.
+            </p>
+
+            <p>
+                Su propósito inicial era facilitar la
+                interacción de los usuarios con información
+                compleja, permitiendo representar los datos
+                desde distintas perspectivas y organizar
+                la interacción con el sistema.
+            </p>
+
+            <p>
+                Con el paso del tiempo, los principios
+                de MVC se extendieron a distintos entornos
+                de programación y se incorporaron a
+                frameworks utilizados en el desarrollo
+                de aplicaciones web.
+            </p>
+
+            <h2 id="componentes">3. Componentes principales de MVC</h2>
+
+            <p>
+                El funcionamiento de MVC depende de la
+                colaboración de tres elementos. Cada uno
+                cumple una función específica dentro
+                de la aplicación.
+            </p>
+
+            <div class="component-grid">
+
+                <div class="component-card model-card">
+                    <div class="component-symbol">M</div>
+                    <h3>Modelo (Model)</h3>
+                    <p>
+                        Representa los datos, las reglas
+                        de negocio y las operaciones
+                        relacionadas con la información.
+                        Puede comunicarse con una base
+                        de datos para consultar o almacenar
+                        registros.
+                    </p>
+                </div>
+
+                <div class="component-card view-card">
+                    <div class="component-symbol">V</div>
+                    <h3>Vista (View)</h3>
+                    <p>
+                        Es la capa de presentación.
+                        Muestra formularios, tablas,
+                        resultados, mensajes y otros
+                        elementos que permiten al usuario
+                        interactuar con la aplicación.
+                    </p>
+                </div>
+
+                <div class="component-card controller-card">
+                    <div class="component-symbol">C</div>
+                    <h3>Controlador (Controller)</h3>
+                    <p>
+                        Recibe las solicitudes, interpreta
+                        las acciones del usuario, valida
+                        la información y coordina la
+                        interacción con el Modelo y
+                        la Vista.
+                    </p>
+                </div>
+
+            </div>
+
+            <h3 class="subheading">Representación del flujo de MVC</h3>
+
+            <div class="diagram">
+
+                <p class="diagram-title">
+                    FLUJO SIMPLIFICADO DE UNA APLICACIÓN MVC
+                </p>
+
+                <div class="diagram-flow">
+
+                    <div class="diagram-node node-user">
+                        01 · Usuario
+                        <br>Realiza una solicitud
+                    </div>
+
+                    <span class="diagram-arrow">↓</span>
+
+                    <div class="diagram-node node-controller">
+                        02 · Controlador
+                        <br>Recibe y procesa la solicitud
+                    </div>
+
+                    <span class="diagram-arrow">↓</span>
+
+                    <div class="diagram-node node-model">
+                        03 · Modelo
+                        <br>Consulta o modifica los datos
+                    </div>
+
+                    <span class="diagram-arrow">↓</span>
+
+                    <div class="diagram-node node-view">
+                        04 · Vista
+                        <br>Presenta el resultado
+                    </div>
+
+                    <span class="diagram-arrow">↓</span>
+
+                    <div class="diagram-node node-user">
+                        05 · Respuesta al usuario
+                    </div>
+
+                </div>
+
+            </div>
+
+            <p>
+                El diagrama representa una secuencia
+                didáctica simplificada. En una aplicación
+                real, la Vista puede enviar solicitudes
+                al Controlador, y este puede seleccionar
+                la Vista apropiada después de trabajar
+                con el Modelo.
+            </p>
+
+            <h2 id="ventajas">4. Ventajas y desventajas</h2>
+
+            <p>
+                La utilización de MVC ofrece beneficios
+                relacionados con la organización del código,
+                pero también requiere planificación y
+                conocimiento de su estructura.
+            </p>
+
+            <div class="comparison-grid">
+
+                <div class="comparison-card">
+                    <h3 class="positive">Ventajas</h3>
+                    <ul>
+                        <li>Separación de responsabilidades.</li>
+                        <li>Mayor organización del proyecto.</li>
+                        <li>Facilidad de mantenimiento.</li>
+                        <li>Mejor capacidad de pruebas.</li>
+                        <li>Reutilización de componentes.</li>
+                        <li>Facilita el trabajo en equipo.</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h3 class="negative">Desventajas</h3>
+                    <ul>
+                        <li>Puede aumentar el número de archivos.</li>
+                        <li>Requiere comprender sus componentes.</li>
+                        <li>Puede ser excesivo en proyectos pequeños.</li>
+                        <li>Una mala distribución genera complejidad.</li>
+                        <li>La coordinación entre componentes necesita planificación.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <h2 id="importancia">5. ¿Por qué MVC sigue siendo importante?</h2>
+
+            <p>
+                MVC continúa siendo relevante porque sus
+                principios permiten organizar sistemas
+                de software y distribuir las responsabilidades
+                de manera comprensible. Aunque existen
+                arquitecturas adicionales, la separación
+                entre datos, presentación y procesamiento
+                sigue siendo una práctica útil.
+            </p>
+
+            <p>
+                Comprender MVC también ayuda a interpretar
+                la estructura de frameworks modernos,
+                reconocer la función de los controladores
+                y modelos y desarrollar aplicaciones
+                con una organización más clara.
+            </p>
+
+            <h2 id="uso">6. Uso de MVC en el desarrollo web moderno</h2>
+
+            <p>
+                Actualmente, MVC se utiliza en aplicaciones
+                web tradicionales, sistemas administrativos,
+                plataformas empresariales y servicios
+                que necesitan gestionar solicitudes
+                y presentar información dinámica.
+            </p>
+
+            <p>
+                También puede combinarse con API REST,
+                donde el servidor recibe solicitudes HTTP
+                y devuelve datos en formatos como JSON.
+                En este escenario, una interfaz independiente
+                puede consumir los servicios del backend.
+            </p>
+
+            <p>
+                Es importante señalar que MVC no es la
+                única arquitectura moderna. También existen
+                arquitecturas por capas, hexagonales,
+                orientadas a servicios y otros enfoques.
+                La elección depende de las características
+                y necesidades del proyecto.
+            </p>
+
+        </section>
+
+        <!-- FRAMEWORKS -->
+
+        <section class="section" id="frameworks">
+
+            <span class="section-label">CAPÍTULO II · TECNOLOGÍAS</span>
+
+            <h2>7. Comparación de frameworks modernos</h2>
+
+            <p>
+                Diferentes frameworks implementan MVC
+                o utilizan patrones relacionados para
+                organizar las aplicaciones. A continuación
+                se presentan cinco ejemplos.
+            </p>
+
+            <h3>Spring MVC</h3>
+            <p>
+                Spring MVC es un framework del ecosistema
+                Java que permite desarrollar aplicaciones
+                web mediante controladores, mecanismos
+                de enrutamiento y tecnologías de presentación.
+                Su componente DispatcherServlet participa
+                en el procesamiento de las solicitudes
+                <a class="citation"
+                   href="https://docs.spring.io/spring-framework/reference/web/webmvc.html"
+                   target="_blank" rel="noopener">
+                   (Spring, s. f.)
+                </a>.
+            </p>
+
+            <h3>ASP.NET Core MVC</h3>
+            <p>
+                ASP.NET Core MVC es una tecnología de
+                Microsoft para desarrollar aplicaciones
+                web y API mediante el patrón MVC. Permite
+                organizar modelos, vistas, controladores
+                y rutas
+                <a class="citation"
+                   href="https://learn.microsoft.com/en-us/aspnet/core/mvc/overview"
+                   target="_blank" rel="noopener">
+                   (Microsoft, s. f.)
+                </a>.
+            </p>
+
+            <h3>Laravel</h3>
+            <p>
+                Laravel es un framework de PHP que
+                proporciona herramientas para desarrollar
+                aplicaciones web organizadas. Utiliza
+                una estructura basada en MVC y ofrece
+                funcionalidades como rutas, controladores,
+                modelos y acceso a datos
+                <a class="citation"
+                   href="https://laravel.com/docs"
+                   target="_blank" rel="noopener">
+                   (Laravel, s. f.)
+                </a>.
+            </p>
+
+            <h3>Django</h3>
+            <p>
+                Django es un framework de Python que
+                emplea una organización conocida como
+                Model-View-Template (MVT). Aunque comparte
+                principios con MVC, distribuye las
+                responsabilidades de manera diferente
+                <a class="citation"
+                   href="https://docs.djangoproject.com/en/stable/"
+                   target="_blank" rel="noopener">
+                   (Django Software Foundation, s. f.)
+                </a>.
+            </p>
+
+            <h3>Ruby on Rails</h3>
+            <p>
+                Ruby on Rails es un framework de Ruby
+                que utiliza MVC y convenciones para
+                organizar modelos, vistas y controladores.
+                Su documentación presenta estos conceptos
+                como parte de sus fundamentos
+                <a class="citation"
+                   href="https://guides.rubyonrails.org/getting_started.html"
+                   target="_blank" rel="noopener">
+                   (Ruby on Rails, s. f.)
+                </a>.
+            </p>
+
+            <h3 class="subheading">Tabla comparativa</h3>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Framework</th>
+                            <th>Lenguaje</th>
+                            <th>Enfoque</th>
+                            <th>Aplicación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Spring MVC</td>
+                            <td>Java</td>
+                            <td>MVC</td>
+                            <td>Sistemas empresariales</td>
+                        </tr>
+                        <tr>
+                            <td>ASP.NET Core MVC</td>
+                            <td>C#</td>
+                            <td>MVC</td>
+                            <td>Aplicaciones y API web</td>
+                        </tr>
+                        <tr>
+                            <td>Laravel</td>
+                            <td>PHP</td>
+                            <td>MVC</td>
+                            <td>Aplicaciones web</td>
+                        </tr>
+                        <tr>
+                            <td>Django</td>
+                            <td>Python</td>
+                            <td>MVT</td>
+                            <td>Aplicaciones web</td>
+                        </tr>
+                        <tr>
+                            <td>Ruby on Rails</td>
+                            <td>Ruby</td>
+                            <td>MVC</td>
+                            <td>Aplicaciones web</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout">
+                <strong>Observación:</strong> Django no debe
+                describirse como una implementación idéntica
+                de MVC. Su patrón MVT comparte conceptos,
+                pero asigna las responsabilidades de forma
+                distinta.
+            </div>
+
+        </section>
+
+        <!-- EJEMPLO -->
+
+        <section class="section" id="ejemplo">
+
+            <span class="section-label">CAPÍTULO III · APLICACIÓN PRÁCTICA</span>
+
+            <h2>8. Ejemplo: sistema de registro de estudiantes</h2>
+
+            <p>
+                Para demostrar la aplicación de MVC se
+                propone un sistema universitario que permita
+                registrar y consultar información de los
+                estudiantes. El sistema manejará cuatro
+                datos fundamentales: matrícula, nombre,
+                carrera y correo electrónico.
+            </p>
+
+            <h3>8.1. Modelo</h3>
+
+            <p>
+                El Modelo representa la información del
+                estudiante y las reglas relacionadas con
+                su administración. En una implementación
+                completa puede incorporar operaciones
+                para guardar, actualizar, eliminar y
+                consultar registros en una base de datos.
+            </p>
+
+            <h3>8.2. Vista</h3>
+
+            <p>
+                La Vista presenta un formulario web con
+                los campos necesarios para introducir
+                la matrícula, el nombre, la carrera y
+                el correo electrónico. También puede
+                mostrar mensajes de validación y los
+                resultados de las consultas.
+            </p>
+
+            <h3>8.3. Controlador</h3>
+
+            <p>
+                El Controlador recibe la información
+                enviada desde el formulario, comprueba
+                los datos, coordina la operación con
+                el Modelo y determina la respuesta que
+                se devolverá a la Vista.
+            </p>
+
+            <h3 class="subheading">Demostración interactiva</h3>
+
+            <div class="demo-panel">
+
+                <h3 class="demo-heading">Registro de estudiantes</h3>
+
+                <p class="demo-description">
+                    Ejemplo de interfaz para introducir
+                    los datos de un estudiante universitario.
+                </p>
+
+                <form id="studentForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-field">
+                            <label for="matricula">Matrícula</label>
+                            <input type="text" id="matricula"
+                                   placeholder="Ej. 100245678"
+                                   maxlength="20" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="nombre">Nombre completo</label>
+                            <input type="text" id="nombre"
+                                   placeholder="Nombre del estudiante"
+                                   maxlength="100" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="carrera">Carrera</label>
+                            <input type="text" id="carrera"
+                                   placeholder="Licenciatura en Informática"
+                                   maxlength="100" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="correo">Correo electrónico</label>
+                            <input type="email" id="correo"
+                                   placeholder="estudiante@email.com"
+                                   maxlength="150" required>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="button button-gold">
+                            Procesar demostración
+                        </button>
+
+                        <button type="reset" class="button"
+                                style="background:white;border:1px solid #dfe6ee;color:#263548">
+                            Limpiar formulario
+                        </button>
+                    </div>
+
+                    <p id="formMessage" class="demo-message"
+                       role="status" aria-live="polite"></p>
+
+                </form>
+
+                <div id="studentResult" class="student-result" hidden>
+                    <h3>Resultado de la demostración</h3>
+                    <div id="studentData"></div>
+                </div>
+
+                <div class="demo-note">
+                    Esta demostración funciona en el navegador
+                    y no almacena registros permanentemente.
+                    No sustituye un backend MVC conectado
+                    a una base de datos.
+                </div>
+
+            </div>
+
+            <h3>8.4. Ejemplo del Modelo en PHP</h3>
+
+            <p>
+                El siguiente código representa una clase
+                sencilla para modelar los datos de un
+                estudiante.
+            </p>
+
+            <div class="code-heading">
+                <h3>Archivo conceptual: Estudiante.php</h3>
+                <button class="copy-button" data-copy="modelCode">
+                    Copiar código
+                </button>
+            </div>
+
+            <pre><code id="modelCode"> &lt;?php
+
+class Estudiante
+{
+    private $matricula;
+    private $nombre;
+    private $carrera;
+    private $correo;
+
+    public function __construct(
+        $matricula,
+        $nombre,
+        $carrera,
+        $correo
+    ) {
+        $this-&gt;matricula = $matricula;
+        $this-&gt;nombre = $nombre;
+        $this-&gt;carrera = $carrera;
+        $this-&gt;correo = $correo;
+    }
+
+    public function obtenerDatos()
+    {
+        return [
+            "matricula" =&gt; $this-&gt;matricula,
+            "nombre" =&gt; $this-&gt;nombre,
+            "carrera" =&gt; $this-&gt;carrera,
+            "correo" =&gt; $this-&gt;correo
+        ];
+    }
+}</code></pre>
+
+            <h3>8.5. Ejemplo conceptual del Controlador</h3>
+
+            <div class="code-heading">
+                <h3>Archivo conceptual: EstudianteController.php</h3>
+                <button class="copy-button" data-copy="controllerCode">
+                    Copiar código
+                </button>
+            </div>
+
+            <pre><code id="controllerCode"> &lt;?php
+
+class EstudianteController
+{
+    public function registrar($datos)
+    {
+        // Validar los datos recibidos.
+        if (
+            empty($datos["matricula"]) ||
+            empty($datos["nombre"]) ||
+            empty($datos["carrera"]) ||
+            empty($datos["correo"])
+        ) {
+            return [
+                "estado" =&gt; "error",
+                "mensaje" =&gt; "Todos los campos son obligatorios."
+            ];
+        }
+
+        // En una aplicación real, aquí se utilizaría
+        // el Modelo para almacenar el registro.
+
+        return [
+            "estado" =&gt; "correcto",
+            "mensaje" =&gt; "Datos validados correctamente."
+        ];
+    }
+}</code></pre>
+
+            <h3>8.6. Relación entre los componentes</h3>
+
+            <ol>
+                <li>El estudiante introduce sus datos en la Vista.</li>
+                <li>La Vista envía la solicitud al Controlador.</li>
+                <li>El Controlador valida la información.</li>
+                <li>El Modelo representa y gestiona los datos.</li>
+                <li>El Controlador determina la respuesta.</li>
+                <li>La Vista presenta el resultado al usuario.</li>
+            </ol>
+
+            <div class="callout">
+                <strong>Alcance del ejemplo:</strong> los fragmentos
+                PHP son ilustrativos y muestran responsabilidades
+                separadas. Para convertirlos en un sistema funcional
+                se necesitan las vistas PHP, rutas, validaciones
+                del servidor, conexión a base de datos y operaciones
+                CRUD. La demostración interactiva de esta página
+                no ejecuta esos fragmentos PHP.
+            </div>
+
+        </section>
+
+        <section class="section" id="conclusion">
+
+            <span class="section-label">REFLEXIÓN ACADÉMICA</span>
+
+            <h2>9. Conclusión</h2>
+
+            <p>
+                El patrón Modelo-Vista-Controlador representa
+                una contribución importante a la organización
+                de las aplicaciones informáticas. Su propuesta
+                de separar los datos, la presentación y
+                el procesamiento de las solicitudes facilita
+                la comprensión de los sistemas y permite
+                distribuir mejor las responsabilidades
+                durante el desarrollo.
+            </p>
+
+            <p>
+                Aunque MVC surgió hace varias décadas,
+                sus principios continúan presentes en
+                frameworks y tecnologías utilizadas
+                actualmente. Su aplicación permite construir
+                proyectos más organizados, facilitar el
+                mantenimiento y comprender mejor la
+                estructura interna de las aplicaciones web.
+            </p>
+
+            <p>
+                Desde mi perspectiva como estudiante de
+                Informática, comprender MVC antes de
+                trabajar con frameworks es fundamental.
+                No se trata solamente de aprender a utilizar
+                herramientas, sino de entender por qué
+                el software necesita una estructura lógica
+                y cómo se relacionan sus componentes.
+            </p>
+
+            <p>
+                El ejemplo del sistema de registro de
+                estudiantes demuestra que este patrón
+                puede aplicarse a situaciones reales
+                del entorno universitario. Por esta razón,
+                considero que estudiar MVC constituye
+                una base importante para continuar
+                aprendiendo arquitectura de software
+                y desarrollo web moderno.
+            </p>
+
+        </section>
+
+        <section class="section" id="referencias">
+
+            <span class="section-label">FUENTES DOCUMENTALES</span>
+
+            <h2>Referencias bibliográficas</h2>
+
+            <p>
+                Las siguientes fuentes permiten consultar
+                los fundamentos del patrón y la documentación
+                oficial de los frameworks estudiados.
+            </p>
+
+            <div class="references">
+
+                <p class="reference-item">
+                    Django Software Foundation. (s. f.).
+                    <em>Django documentation.</em>
+                    <a href="https://docs.djangoproject.com/en/stable/"
+                       target="_blank" rel="noopener">
+                       https://docs.djangoproject.com/en/stable/
+                    </a>
+                </p>
+
+                <p class="reference-item">
+                    Laravel. (s. f.).
+                    <em>Laravel documentation.</em>
+                    <a href="https://laravel.com/docs"
+                       target="_blank" rel="noopener">
+                       https://laravel.com/docs
+                    </a>
+                </p>
+
+                <p class="reference-item">
+                    Microsoft. (s. f.).
+                    <em>Overview of ASP.NET Core MVC.</em>
+                    <a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/overview"
+                       target="_blank" rel="noopener">
+                       https://learn.microsoft.com/en-us/aspnet/core/mvc/overview
+                    </a>
+                </p>
+
+                <p class="reference-item">
+                    Reenskaug, T. (1979, 10 de diciembre).
+                    <em>Models–Views–Controllers.</em>
+                    Xerox PARC.
+                    <a href="https://doi.org/10.5281/zenodo.3676092"
+                       target="_blank" rel="noopener">
+                       https://doi.org/10.5281/zenodo.3676092
+                    </a>
+                </p>
+
+                <p class="reference-item">
+                    Ruby on Rails. (s. f.).
+                    <em>Getting started with Rails.</em>
+                    <a href="https://guides.rubyonrails.org/getting_started.html"
+                       target="_blank" rel="noopener">
+                       https://guides.rubyonrails.org/getting_started.html
+                    </a>
+                </p>
+
+                <p class="reference-item">
+                    Spring. (s. f.).
+                    <em>Spring Web MVC.</em>
+                    <a href="https://docs.spring.io/spring-framework/reference/web/webmvc.html"
+                       target="_blank" rel="noopener">
+                       https://docs.spring.io/spring-framework/reference/web/webmvc.html
+                    </a>
+                </p>
+
+            </div>
+
+            <div class="callout">
+                <strong>Nota académica:</strong> las referencias
+                deben corresponder a las fuentes efectivamente
+                consultadas. Antes de entregar, verifica las
+                versiones y los datos bibliográficos de cada
+                documentación. Para la versión impresa, aplica
+                también las indicaciones APA 7 de tu docente.
+            </div>
+
+        </section>
+
+    </article>
+</div>
+
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p><strong>UNIVERSIDAD AUTÓNOMA DE SANTO DOMINGO</strong></p>
+        <p>Facultad de Ciencias · Escuela de Informática</p>
+        <p>Licenciatura en Informática</p>
+        <p>Investigación sobre el patrón Modelo-Vista-Controlador</p>
+        <p>Bienvenido Quezada Alcántara · 2026</p>
+    </div>
+</footer>
+
+<button class="back-top" id="backTop"
+        aria-label="Volver al inicio">↑</button>
+
+<script>
+"use strict";
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuButton = document.getElementById("menuButton");
+    const mainNav = document.getElementById("mainNav");
+
+    function closeMenu() {
+        mainNav.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.textContent = "☰";
+    }
+
+    menuButton.addEventListener("click", function () {
+
+        const isOpen = mainNav.classList.toggle("open");
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
+
+        menuButton.textContent = isOpen ? "×" : "☰";
+    });
+
+    mainNav.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", closeMenu);
+    });
+
+    /* -----------------------------------------------
+       2. FORMULARIO DE DEMOSTRACIÓN
+    ----------------------------------------------- */
+
+    const form = document.getElementById("studentForm");
+    const message = document.getElementById("formMessage");
+    const result = document.getElementById("studentResult");
+    const dataContainer = document.getElementById("studentData");
+
+    form.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        const matricula =
+            document.getElementById("matricula").value.trim();
+
+        const nombre =
+            document.getElementById("nombre").value.trim();
+
+        const carrera =
+            document.getElementById("carrera").value.trim();
+
+        const correo =
+            document.getElementById("correo").value.trim();
+
+        if (!matricula || !nombre || !carrera || !correo) {
+
+            message.textContent = "Complete todos los campos.";
+            message.style.color = "#b42318";
+            result.hidden = true;
+
+            return;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(correo)) {
+
+            message.textContent =
+                "Introduzca un correo electrónico válido.";
+
+            message.style.color = "#b42318";
+            result.hidden = true;
+
+            return;
+        }
+
+        const student = {
+            matricula: matricula,
+            nombre: nombre,
+            carrera: carrera,
+            correo: correo
+        };
+
+        dataContainer.replaceChildren();
+
+        const fields = [
+            ["Matrícula", student.matricula],
+            ["Nombre", student.nombre],
+            ["Carrera", student.carrera],
+            ["Correo electrónico", student.correo]
+        ];
+
+        fields.forEach(function (field) {
+
+            const paragraph = document.createElement("p");
+            const strong = document.createElement("strong");
+
+            strong.textContent = field[0] + ": ";
+
+            paragraph.appendChild(strong);
+
+            paragraph.appendChild(
+                document.createTextNode(field[1])
+            );
+
+            dataContainer.appendChild(paragraph);
+        });
+
+        result.hidden = false;
+
+        message.textContent =
+            "Datos recibidos y validados en esta demostración.";
+
+        message.style.color = "#18794e";
+    });
+
+    form.addEventListener("reset", function () {
+
+        result.hidden = true;
+
+        message.textContent = "";
+
+        dataContainer.replaceChildren();
+    });
+
+
+    document.querySelectorAll("[data-copy]").forEach(function (button) {
+
+        button.addEventListener("click", async function () {
+
+            const targetId = button.dataset.copy;
+            const target = document.getElementById(targetId);
+
+            if (!target) return;
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    target.textContent
+                );
+
+                button.textContent = "Copiado";
+
+                setTimeout(function () {
+                    button.textContent = "Copiar código";
+                }, 1600);
+
+            } catch (error) {
+
+                button.textContent =
+                    "No se pudo copiar automáticamente";
+
+            }
+        });
+    });
+
+
+    const backTop = document.getElementById("backTop");
+
+    window.addEventListener("scroll", function () {
+
+        backTop.classList.toggle(
+            "visible",
+            window.scrollY > 450
+        );
+
+    });
+
+    backTop.addEventListener("click", function () {
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    });
+
+    const sections = document.querySelectorAll(
+        ".article section[id]"
+    );
+
+    const navLinks = document.querySelectorAll(
+        "#sideNav a"
+    );
+
+    if ("IntersectionObserver" in window) {
+
+        const observer = new IntersectionObserver(
+            function (entries) {
+
+                entries.forEach(function (entry) {
+
+                    if (!entry.isIntersecting) return;
+
+                    navLinks.forEach(function (link) {
+
+                        link.classList.toggle(
+                            "active",
+                            link.getAttribute("href") ===
+                            "#" + entry.target.id
+                        );
+
+                    });
+
+                });
+
+            },
+            {
+                rootMargin: "-20% 0px -65% 0px"
+            }
+        );
+
+        sections.forEach(function (section) {
+            observer.observe(section);
+        });
+    }
+
+});
+</script>
+
+</body>
+</html>
+
+
+
